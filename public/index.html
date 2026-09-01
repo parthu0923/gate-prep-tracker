@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GATE CS 2027 Prep Tracker | Daily Plan & Calendar</title>
+  <meta name="description" content="Ultimate GATE CS 2027 daily study schedule, interactive calendar, blackout exam manager, and study material repository.">
+  <!-- Google Fonts: Inter, Outfit & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="dark-theme">
+
+  <!-- LANDING / AUTH SCREEN (Shown if user NOT logged in) -->
+  <div id="auth-landing-screen" class="auth-landing-screen">
+    <div class="auth-card-container">
+      <div class="auth-brand-header">
+        <i class="fa-solid fa-graduation-cap auth-logo-icon"></i>
+        <h1>GATE CS 2027</h1>
+        <p>Personal Study Planner & Progress Tracker</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button id="tab-login" class="auth-tab active">Login</button>
+        <button id="tab-register" class="auth-tab">Register</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="landing-login-form" class="auth-form">
+        <div class="form-group">
+          <label for="login-username">Username</label>
+          <input type="text" id="login-username" placeholder="Enter your username" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Enter your password" required autocomplete="current-password">
+        </div>
+        <div id="login-error" class="form-error hidden"></div>
+        <button type="submit" class="btn btn-primary w-full mt-3">
+          <i class="fa-solid fa-right-to-bracket"></i> Login & Launch Tracker
+        </button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="landing-register-form" class="auth-form hidden">
+        <div class="form-group">
+          <label for="reg-username">Choose Username</label>
+          <input type="text" id="reg-username" placeholder="Create a username" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label for="reg-password">Choose Password</label>
+          <input type="password" id="reg-password" placeholder="Create a password" required autocomplete="new-password">
+        </div>
+        <div id="reg-error" class="form-error hidden"></div>
+        <button type="submit" class="btn btn-primary w-full mt-3">
+          <i class="fa-solid fa-user-plus"></i> Create Account & Sync Devices
+        </button>
+      </form>
+
+      <div class="auth-footer-info">
+        <i class="fa-solid fa-mobile-screen-button"></i> Synced seamlessly across Phone & Laptop
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MAIN DASHBOARD APP (Shown when logged in) -->
+  <div id="dashboard-app" class="dashboard-app hidden">
+
+    <!-- TOP HEADER BAR -->
+    <header class="app-header">
+      <div class="header-left">
+        <button id="menu-toggle-btn" class="icon-btn" title="Navigation Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="brand">
+          <i class="fa-solid fa-graduation-cap brand-icon"></i>
+          <div class="brand-text">
+            <span class="brand-title">GATE CS 2027</span>
+            <span class="brand-subtitle">Planner & Progress</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center Search & Phone URL hint -->
+      <div class="header-center">
+        <div class="search-container">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="global-search-input" placeholder="Search topics, subjects, teachers, textbooks..." autocomplete="off">
+          <div id="search-results-dropdown" class="search-results-dropdown hidden"></div>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div class="phone-access-pill" id="phone-access-pill" title="Access on your phone using this LAN IP">
+          <i class="fa-solid fa-wifi text-green"></i> <span id="phone-url-text">http://...</span>
+        </div>
+        <div id="user-profile-badge" class="user-profile-badge">
+          <i class="fa-solid fa-circle-user"></i>
+          <span id="user-display-name">Student</span>
+          <button id="logout-btn" class="icon-btn-sm" title="Logout"><i class="fa-solid fa-power-off"></i></button>
+        </div>
+      </div>
+    </header>
+
+    <!-- SIDEBAR DRAWER MENU -->
+    <div id="sidebar-overlay" class="sidebar-overlay hidden"></div>
+    <aside id="app-sidebar" class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-user-info">
+          <i class="fa-solid fa-user-circle user-avatar"></i>
+          <div>
+            <h4 id="sidebar-username">Student</h4>
+            <span class="status-tag active-sync"><i class="fa-solid fa-cloud-check"></i> Device Synced</span>
+          </div>
+        </div>
+        <button id="close-sidebar-btn" class="icon-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-view="dashboard-view">
+          <i class="fa-solid fa-table-columns"></i> Dashboard & Calendar
+        </button>
+
+        <button class="nav-item" data-view="subjects-view">
+          <i class="fa-solid fa-book-bookmark"></i> GATE CS Syllabus
+        </button>
+
+        <button class="nav-item" data-view="holidays-view">
+          <i class="fa-solid fa-umbrella-beach"></i> Sudden Holidays Manager
+        </button>
+
+        <button class="nav-item" data-view="materials-view">
+          <i class="fa-solid fa-cloud-arrow-up"></i> Study Materials & PDFs
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="overall-progress-box">
+          <div class="progress-label">
+            <span>Overall Preparation</span>
+            <span id="sidebar-progress-percent">0%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div id="sidebar-progress-bar" class="progress-bar-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+        <button id="sidebar-logout-btn" class="btn btn-outline btn-sm mt-3 w-full">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN TWO-COLUMN SPLIT DASHBOARD -->
+    <main class="app-main-content">
+
+      <!-- VIEW 1: SPLIT DASHBOARD & SIDE CALENDAR -->
+      <section id="dashboard-view" class="view-section active">
+        <div class="split-dashboard-container">
+
+          <!-- LEFT COLUMN: PERMANENT SIDE CALENDAR (As requested in screenshot!) -->
+          <div class="side-calendar-wrapper">
+            <div class="side-calendar-card">
+              <div class="side-calendar-header">
+                <h3 id="side-month-year-title">SEPTEMBER 2026</h3>
+                <div class="side-calendar-nav">
+                  <button id="side-prev-month-btn" class="icon-btn-sm"><i class="fa-solid fa-chevron-left"></i></button>
+                  <button id="side-next-month-btn" class="icon-btn-sm"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+              </div>
+
+              <!-- Weekdays Header -->
+              <div class="side-weekdays-row">
+                <div class="side-weekday-cell sun-cell">S</div>
+                <div class="side-weekday-cell">M</div>
+                <div class="side-weekday-cell">T</div>
+                <div class="side-weekday-cell">W</div>
+                <div class="side-weekday-cell">T</div>
+                <div class="side-weekday-cell">F</div>
+                <div class="side-weekday-cell">S</div>
+              </div>
+
+              <!-- Days Grid -->
+              <div id="side-calendar-grid" class="side-days-grid">
+                <!-- Rendered dynamically via JS -->
+              </div>
+
+              <div class="side-calendar-footer-legend">
+                <span class="legend-item"><span class="legend-dot red-dot"></span> Sun / Holiday (Red)</span>
+                <span class="legend-item"><span class="legend-dot green-dot"></span> Done</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN: TODAY'S STUDY DETAILS & HOURLY GANTT -->
+          <div class="study-details-wrapper">
+
+            <!-- Top Banner Header -->
+            <div class="study-header-banner">
+              <div class="banner-date-group">
+                <h2 id="banner-date-title">Tue, Sep 1, 2026</h2>
+                <div class="banner-badges">
+                  <span id="banner-day-count-badge" class="badge badge-purple">Day 1 of 152</span>
+                  <span id="banner-countdown-badge" class="badge badge-green"><i class="fa-solid fa-hourglass-half"></i> -- Days to GATE</span>
+                </div>
+              </div>
+
+              <div class="banner-time-badges">
+                <span class="badge badge-dark"><i class="fa-solid fa-clock text-amber"></i> Daily 2.0h: 8:30 PM - 10:30 PM</span>
+                <span class="badge badge-amber"><i class="fa-solid fa-sun"></i> Sundays: Extended 5.0h Marathon</span>
+              </div>
+            </div>
+
+            <!-- Blackout Alert Banner (if exam blackout period) -->
+            <div id="blackout-banner" class="blackout-banner hidden">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <div>
+                <strong id="blackout-title">College Exam Blackout Period</strong>
+                <p id="blackout-desc">No GATE study assigned during Mid / End-sem exams!</p>
+              </div>
+            </div>
+
+            <!-- Interactive Hourly Gantt Schedule Bar -->
+            <div class="gantt-schedule-card">
+              <div class="gantt-card-header">
+                <span class="gantt-title"><i class="fa-solid fa-terminal text-cyan"></i> INTERACTIVE HOURLY GANTT SCHEDULE</span>
+                <span id="gantt-date-tag" class="gantt-date-tag">2026-09-07</span>
+              </div>
+
+              <div id="gantt-timeline-blocks" class="gantt-timeline-blocks">
+                <!-- Rendered via JS -->
+              </div>
+            </div>
+
+            <!-- Topic Details Main Card -->
+            <div id="study-card-container">
+              <!-- Rendered via JS -->
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 2: SYLLABUS -->
+      <section id="subjects-view" class="view-section hidden">
+        <div class="section-title-bar">
+          <h2>GATE CS 2027 Syllabus & Subject Progress</h2>
+          <p>Mastery progress across all 12 core subjects, mathematics, and aptitude.</p>
+        </div>
+        <div id="subjects-grid" class="subjects-grid"></div>
+      </section>
+
+      <!-- VIEW 3: HOLIDAYS MANAGER -->
+      <section id="holidays-view" class="view-section hidden">
+        <div class="section-title-bar">
+          <h2>Holidays & Study Adjuster</h2>
+          <p>Add sudden college or local holidays to schedule longer study sessions!</p>
+        </div>
+        <div class="holidays-layout">
+          <div class="card add-holiday-card">
+            <h3><i class="fa-solid fa-plus-circle text-amber"></i> Add Sudden / Custom Holiday</h3>
+            <form id="add-holiday-form">
+              <div class="form-group">
+                <label for="holiday-date">Holiday Date</label>
+                <input type="date" id="holiday-date" required>
+              </div>
+              <div class="form-group">
+                <label for="holiday-title">Holiday Occasion / Reason</label>
+                <input type="text" id="holiday-title" placeholder="e.g. Sudden College Sports Day / Festival" required>
+              </div>
+              <button type="submit" class="btn btn-primary w-full"><i class="fa-solid fa-save"></i> Save Custom Holiday</button>
+            </form>
+          </div>
+          <div class="card holidays-list-card">
+            <h3><i class="fa-solid fa-list text-red"></i> Holidays Directory</h3>
+            <div id="holidays-list-container" class="holidays-list-container"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 4: MATERIALS -->
+      <section id="materials-view" class="view-section hidden">
+        <div class="section-title-bar">
+          <h2>Study Materials & Textbooks Repository</h2>
+          <p>Upload reference PDFs, textbooks, and PYQs up to 500 MB. Synced across phone & laptop.</p>
+        </div>
+        <div class="materials-layout">
+          <div class="card upload-card">
+            <h3><i class="fa-solid fa-cloud-arrow-up text-indigo"></i> Upload New Material</h3>
+            <form id="upload-material-form">
+              <div class="form-group">
+                <label for="upload-subject">Subject Category</label>
+                <select id="upload-subject">
+                  <option value="Digital Logic">Digital Logic</option>
+                  <option value="Computer Organization & Architecture">Computer Organization & Architecture</option>
+                  <option value="Programming & Data Structures">Programming & Data Structures</option>
+                  <option value="Operating Systems">Operating Systems</option>
+                  <option value="Databases">Databases</option>
+                  <option value="Computer Networks">Computer Networks</option>
+                  <option value="Algorithms">Algorithms</option>
+                  <option value="General Aptitude">General Aptitude</option>
+                  <option value="Discrete Mathematics">Discrete Mathematics</option>
+                  <option value="Engineering Mathematics">Engineering Mathematics</option>
+                  <option value="Theory of Computation">Theory of Computation</option>
+                  <option value="Compiler Design">Compiler Design</option>
+                  <option value="General" selected>General / PYQs</option>
+                </select>
+              </div>
+              <div class="file-drop-zone" id="file-drop-zone">
+                <i class="fa-solid fa-file-pdf file-icon"></i>
+                <p>Click or drag & drop PDF / Document file here</p>
+                <span class="file-hint">Max file size: 500 MB</span>
+                <input type="file" id="material-file-input" required>
+              </div>
+              <div id="selected-file-name" class="selected-file-name hidden"></div>
+              <button type="submit" id="upload-submit-btn" class="btn btn-primary w-full mt-3">
+                <i class="fa-solid fa-upload"></i> Upload to Database
+              </button>
+            </form>
+          </div>
+          <div class="card materials-list-card">
+            <h3><i class="fa-solid fa-folder-open text-cyan"></i> Uploaded Documents & Textbooks</h3>
+            <div id="materials-list-container" class="materials-list-container"></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FLOATING AI CHATBOT WIDGET -->
+    <div id="chatbot-widget" class="chatbot-widget">
+      <button id="chatbot-toggle-btn" class="chatbot-toggle-btn" title="Ask GATE AI Assistant">
+        <i class="fa-solid fa-robot"></i>
+      </button>
+
+      <div id="chatbot-window" class="chatbot-window hidden">
+        <div class="chatbot-header">
+          <div class="chatbot-header-title">
+            <i class="fa-solid fa-robot text-amber"></i>
+            <div>
+              <strong>GATE Assistant AI</strong>
+              <span class="online-indicator">Online</span>
+            </div>
+          </div>
+          <button id="close-chatbot-btn" class="icon-btn-sm"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div id="chatbot-messages" class="chatbot-messages">
+          <div class="chat-msg bot-msg">
+            Hello! 👋 I'm your GATE CS 2027 AI guide. Ask me anything about syllabus topics, YouTube channels, textbooks, or schedule adjustments!
+          </div>
+        </div>
+
+        <div class="chatbot-input-bar">
+          <input type="text" id="chatbot-input" placeholder="Ask e.g. Which channel for COA?">
+          <button id="chatbot-send-btn" class="btn btn-primary btn-sm"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="/js/scheduleData.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
